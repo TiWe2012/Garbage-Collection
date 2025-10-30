@@ -1,85 +1,46 @@
 index.html
-https://TiWe2012.github.io/Garbage-Collection/
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Garbage Collection Wiki</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-            color: #1b5e20;
-        }
-        h1 {
-            color: #2e7d32;
-            text-align: center;
-        }
-        .section {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-        nav {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        nav a {
-            margin: 0 10px;
-            padding: 8px 16px;
-            text-decoration: none;
-            color: white;
-            background-color: #43a047;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-        nav a:hover {
-            background-color: #2e7d32;
-        }
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #388e3c;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Garbage Collection - Spiel zum Müllsammeln und Umweltschutz">
+    <title>Garbage Collection - Werde zum Umwelthelden</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>🌍 Garbage Collection Wiki</h1>
+    <header>
+        <h1>Garbage Collection</h1>
+        <p>Werde zum Umwelthelden und sammle Müll mit Spaß!</p>
+    </header>
 
-    <nav>
-        <a href="#about">Über die App</a>
-        <a href="#howto">So spielst du</a>
-        <a href="#faq">FAQ</a>
-    </nav>
+    <section id="intro">
+        <h2>Was ist Garbage Collection?</h2>
+        <p>Garbage Collection ist eine gamifizierte Müllsammel-App, die Umweltschutz mit Spaß verbindet! Sammle Müll, lade Videos hoch, lass sie von unserer KI analysieren und verdiene Punkte. Trete gegen andere Spieler an, schalte Belohnungen frei und werde zum Umwelthelden!</p>
+    </section>
 
-    <div class="section" id="about">
-        <h2>Über die App</h2>
-        <p>Garbage Collection ist eine gamifizierte Müllsammel-App, die Umweltschutz mit Spaß verbindet! 
-        Sammle Müll, lade Videos hoch, lass sie von unserer KI analysieren und verdiene Punkte. 
-        Tritt gegen andere Spieler an, schalte Belohnungen frei und werde zum Umwelthelden!</p>
-    </div>
-
-    <div class="section" id="howto">
-        <h2>So spielst du</h2>
+    <section id="how-to-play">
+        <h2>So spielst du Garbage Collection</h2>
         <ol>
-            <li><b>Müll finden:</b> Gehe nach draußen und finde verschmutzte Bereiche in deiner Umgebung.</li>
-            <li><b>Video aufnehmen:</b> Filme den Bereich vor und nach der Reinigung (15–60 Sekunden).</li>
-            <li><b>KI-Analyse:</b> Lade das Video in der App hoch und lass es von der KI analysieren.</li>
-            <li><b>Punkte erhalten:</b> Erhalte automatisch Punkte basierend auf der gesammelten Müllmenge!</li>
+            <li><strong>Müll finden</strong> – Gehe nach draußen und finde verschmutzte Bereiche in deiner Umgebung.</li>
+            <li><strong>Video aufnehmen</strong> – Filme den Bereich vor und nach der Reinigung in einem Video (15-60 Sekunden).</li>
+            <li><strong>KI-Analyse</strong> – Lade das Video in der App hoch und lass es von unserer KI analysieren.</li>
+            <li><strong>Punkte erhalten</strong> – Erhalte automatisch Punkte basierend auf der gesammelten Müllmenge!</li>
         </ol>
-    </div>
+    </section>
 
-    <div class="section" id="faq">
-        <h2>FAQ</h2>
-        <p><b>Ist die App kostenlos?</b><br>Ja, Garbage Collection ist komplett kostenlos und werbefrei!</p>
-        <p><b>Wie funktioniert die KI?</b><br>Die KI analysiert dein Video und erkennt automatisch Müllmengen sowie Reinigungsfortschritt.</p>
-    </div>
+    <section id="features">
+        <h2>Warum Garbage Collection?</h2>
+        <ul>
+            <li><strong>Umweltschutz:</strong> Du hilfst aktiv, die Umwelt zu reinigen und zu schützen.</li>
+            <li><strong>Gamification:</strong> Sammle Punkte und Belohnungen durch deine Aktionen.</li>
+            <li><strong>Gesunde Gewohnheiten:</strong> Fördere Outdoor-Aktivitäten und Verantwortungsbewusstsein.</li>
+            <li><strong>Gemeinschaft:</strong> Trete gegen andere Spieler an und schalte tolle Belohnungen frei!</li>
+        </ul>
+    </section>
 
     <footer>
-        © 2025 Garbage Collection Wiki · Made with ❤️ for a cleaner planet
+        <p>&copy; 2025 Garbage Collection. Alle Rechte vorbehalten.</p>
     </footer>
 </body>
 </html>
