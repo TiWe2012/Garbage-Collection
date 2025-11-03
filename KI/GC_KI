@@ -1,1 +1,280 @@
+main.py
+#!/usr/bin/env python3
+"""
+GarbageCollection - Single-file FastAPI KI Backend (main.py)
 
+Dieses Skript enthält einen kompletten FastAPI-Server in einer Datei:
+- POST /analyze: akzeptiert 'video_before' und 'video_after' (Form-Data files)
+                optional: gps_lat, gps_lon, user_id (Form-Felder)
+- Führt einfache YOLOv8 Inferenz (Ultralytics) auf sample-Frames durch
+- Schätzt Punkte anhand Bounding-Box-Flächen und Kategorien
+- Führt Basis-AntiCheat-Checks aus: GPS-Placeholder, Scene Similarity (ORB), Motion (Optical Flow)
+
+Vorbedingungen:
+- Python 3.8+
+- pip install fastapi uvicorn python-multipart ultralytics opencv-python-headless numpy
+
+Start:
+    export MODEL_PATH="path/to/your/weights.pt"   # optional
+    uvicorn main:app --reload --port 8000
+
+Hinweis:
+- Für Produktion: Trainiere eigenes YOLOv8 Model (z.B. auf TACO/TrashNet),
+  aktiviere sichere Speicherung, EXIF/GPS-Verifikation, Rate-Limits und manuelle Prüfungen.
+"""
+
+import os
+import tempfile
+import shutil
+from typing import List, Dict, Optional
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi.responses import JSONResponse
+import numpy as np
+import cv2
+from ultralytics import YOLO
+
+# Konfiguration
+MODEL_PATH = os.environ.get("MODEL_PATH", "yolov8n.pt")  # Default: yolov8n (small)
+SAMPLE_COUNT = 3
+SAMPLE_MAX_TIME = 2.0  # Sekunden, aus denen Frames gezogen werden
+CONF_THRESHOLD = 0.25
+
+# Scoring-Parameter
+BASE_POINTS = 10.0
+CATEGORY_MULT = {
+    "glass": 1.5,
+    "metal": 1.3,
+    "plastic": 1.2,
+    "paper": 1.0,
+    "trash": 1.0,
+    "hazard": 2.0
+}
+
+app = FastAPI(title="GarbageCollection KI (Single-File)")
+
+# --- Hilfsfunktionen / Logik ---
+
+
+def load_model(path: str) -> YOLO:
+    try:
+        model = YOLO(path)
+        return model
+    except Exception as e:
+        raise RuntimeError(f"Modell konnte nicht geladen werden: {e}")
+
+
+def sample_frames(video_path: str, n_samples: int = SAMPLE_COUNT, max_time: float = SAMPLE_MAX_TIME) -> List[np.ndarray]:
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        cap.release()
+        raise RuntimeError(f"Video konnte nicht geöffnet werden: {video_path}")
+    fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
+    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
+    duration = frame_count / fps if fps > 0 else 0.0
+    # Wir sample äquidistant innerhalb der ersten max_time Sekunden (oder gesamte Länge)
+    end_time = min(max_time, duration) if duration > 0 else max_time
+    times = np.linspace(0, max(0.001, end_time), n_samples)
+    frames = []
+    for t in times:
+        frame_no = int(t * fps)
+        cap.set(cv2.CAP_PROP_POS_FRAMES, frame_no)
+        ret, frame = cap.read()
+        if not ret:
+            continue
+        frames.append(frame)
+    cap.release()
+    if not frames:
+        raise RuntimeError(f"Keine Frames extrahiert aus: {video_path}")
+    return frames
+
+
+def detect_on_frame(model: YOLO, frame: np.ndarray, conf: float = CONF_THRESHOLD) -> List[Dict]:
+    # Führt YOLO Inferenz auf einem Frame aus und liefert serialisierbare Detections
+    res = model(frame, conf=conf)[0]
+    dets = []
+    img_h, img_w = frame.shape[:2]
+    # boxes: [x1,y1,x2,y2,score,class]
+    if hasattr(res, "boxes") and res.boxes is not None:
+        for box in res.boxes.data.tolist():
+            try:
+                x1, y1, x2, y2, score, cls = box
+            except Exception:
+                continue
+            area = max(0.0, (x2 - x1) * (y2 - y1))
+            class_name = str(model.names[int(cls)]).lower() if hasattr(model, "names") else str(int(cls))
+            dets.append({
+                "class": class_name,
+                "score": float(score),
+                "area": float(area),
+                "box": [float(x1), float(y1), float(x2), float(y2)]
+            })
+    # Optional: falls masks vorhanden, könnte man Mask-Area statt bbox-area verwenden
+    return dets
+
+
+def category_multiplier(category: str) -> float:
+    return CATEGORY_MULT.get(category.lower(), 1.0)
+
+
+def points_for_detection(area: float, img_area: float, category: str = "trash", base: float = BASE_POINTS) -> float:
+    if img_area <= 0:
+        return 0.0
+    area_ratio = max(0.01, area / img_area)  # minimale Gewichtung
+    mult = category_multiplier(category)
+    return base * mult * area_ratio
+
+
+def points_for_video(detections_before: List[Dict], detections_after: List[Dict], img_area: float) -> float:
+    pts_b = sum(points_for_detection(d["area"], img_area, d.get("class", "trash")) for d in detections_before)
+    pts_a = sum(points_for_detection(d["area"], img_area, d.get("class", "trash")) for d in detections_after)
+    delta = max(0.0, pts_b - pts_a)
+    bonus = 0.2 * delta if delta > 0.1 * max(1.0, pts_b) else 0.0
+    return delta + bonus
+
+
+# --- Anti-Cheat Checks ---
+
+
+def check_gps(lat: Optional[float], lon: Optional[float], allowed_radius_m: float = 20000.0) -> bool:
+    # Placeholder: derzeit immer True. In Produktion: geofencing / user-history prüfen.
+    # Beispiel: prüfe, ob lat/lon vorhanden sind und valide Werte haben
+    if lat is None or lon is None:
+        return False
+    try:
+        latf = float(lat)
+        lonf = float(lon)
+        if not (-90.0 <= latf <= 90.0 and -180.0 <= lonf <= 180.0):
+            return False
+        return True
+    except Exception:
+        return False
+
+
+def check_scene_similarity(img1: np.ndarray, img2: np.ndarray, min_good_matches: int = 20) -> bool:
+    try:
+        gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+        gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+        orb = cv2.ORB_create(500)
+        k1, d1 = orb.detectAndCompute(gray1, None)
+        k2, d2 = orb.detectAndCompute(gray2, None)
+        if d1 is None or d2 is None:
+            return False
+        bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+        matches = bf.match(d1, d2)
+        matches = sorted(matches, key=lambda x: x.distance)
+        good = [m for m in matches if m.distance < 60]
+        return len(good) >= min_good_matches
+    except Exception:
+        return False
+
+
+def check_motion(img1: np.ndarray, img2: np.ndarray, motion_threshold: float = 1.0) -> bool:
+    try:
+        g1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+        g2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+        flow = cv2.calcOpticalFlowFarneback(g1, g2, None,
+                                            pyr_scale=0.5, levels=3, winsize=15,
+                                            iterations=3, poly_n=5, poly_sigma=1.2, flags=0)
+        mag, ang = cv2.cartToPolar(flow[..., 0], flow[..., 1])
+        median_mag = float(np.median(mag))
+        return median_mag > motion_threshold
+    except Exception:
+        return False
+
+
+# --- Server / Endpoints ---
+
+# Lade Modell global beim Start
+try:
+    MODEL = load_model(MODEL_PATH)
+except Exception as e:
+    # Modell laden fehlgeschlagen — wir lassen den Server trotzdem starten, aber Requests schlagen fehl.
+    MODEL = None
+    print(f"[WARN] Modell konnte beim Start nicht geladen werden: {e}")
+
+
+@app.post("/analyze")
+async def analyze(
+    video_before: UploadFile = File(...),
+    video_after: UploadFile = File(...),
+    gps_lat: Optional[float] = Form(None),
+    gps_lon: Optional[float] = Form(None),
+    user_id: Optional[str] = Form(None),
+):
+    if MODEL is None:
+        raise HTTPException(status_code=500, detail="Modell ist nicht geladen. Setze MODEL_PATH und starte neu.")
+    tmpdir = tempfile.mkdtemp(prefix="gc_")
+    try:
+        before_path = os.path.join(tmpdir, "before.mp4")
+        after_path = os.path.join(tmpdir, "after.mp4")
+        # Speichere Uploads temporär
+        with open(before_path, "wb") as f:
+            shutil.copyfileobj(video_before.file, f)
+        with open(after_path, "wb") as f:
+            shutil.copyfileobj(video_after.file, f)
+
+        # GPS-Check (einfach)
+        gps_ok = check_gps(gps_lat, gps_lon)
+
+        # Frames extrahieren
+        frames_b = sample_frames(before_path, n_samples=SAMPLE_COUNT, max_time=SAMPLE_MAX_TIME)
+        frames_a = sample_frames(after_path, n_samples=SAMPLE_COUNT, max_time=SAMPLE_MAX_TIME)
+
+        # Inferenz auf Samples
+        dets_b_all = []
+        dets_a_all = []
+        for f in frames_b:
+            dets_b_all.extend(detect_on_frame(MODEL, f))
+        for f in frames_a:
+            dets_a_all.extend(detect_on_frame(MODEL, f))
+
+        # Bildfläche (nutze erstes Frame)
+        img_area = float(frames_b[0].shape[0] * frames_b[0].shape[1])
+
+        points = points_for_video(dets_b_all, dets_a_all, img_area)
+
+        # Anti-Cheat: Scene Similarity & Motion (erster Sample)
+        scene_sim = check_scene_similarity(frames_b[0], frames_a[0])
+        motion_ok = check_motion(frames_b[0], frames_a[0])
+
+        status = "ok" if (gps_ok and scene_sim and motion_ok) else "flagged"
+
+        # Antwort serialisierbar machen (sichere Typen)
+        def safe_dets(dets):
+            safe = []
+            for d in dets:
+                safe.append({
+                    "class": str(d.get("class")),
+                    "score": float(d.get("score", 0.0)),
+                    "area": float(d.get("area", 0.0)),
+                    "box": [float(x) for x in d.get("box", [])]
+                })
+            return safe
+
+        result = {
+            "user_id": user_id,
+            "points": round(float(points), 2),
+            "status": status,
+            "anticheat": {
+                "gps_ok": bool(gps_ok),
+                "scene_similarity": bool(scene_sim),
+                "motion_ok": bool(motion_ok)
+            },
+            "detections_before": safe_dets(dets_b_all),
+            "detections_after": safe_dets(dets_a_all)
+        }
+        return JSONResponse(result)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        try:
+            shutil.rmtree(tmpdir)
+        except Exception:
+            pass
+
+
+@app.get("/")
+def root():
+    return {"service": "GarbageCollection KI", "model_path": MODEL_PATH, "model_loaded": MODEL is not None}
