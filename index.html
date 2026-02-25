@@ -29,12 +29,12 @@
             min-height: 100vh;
         }
 
-        /* Fixiertes Logo oben links */
+        /* Fixiertes Logo oben links mit deinem spezifischen Pfad */
         .fixed-logo {
             position: fixed;
             top: 20px;
             left: 20px;
-            width: 80px; /* Größe des Logos */
+            width: 80px;
             height: auto;
             z-index: 1000;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
@@ -46,7 +46,7 @@
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin-top: 40px; /* Platz für das Logo auf kleinen Bildschirmen */
+            margin-top: 40px;
         }
 
         .header {
@@ -101,33 +101,22 @@
             font-size: 1rem;
         }
 
-        /* Individuelle Farben für die Schritte */
         .step-1 .step-number { background-color: var(--step-1-color); }
         .step-2 .step-number { background-color: var(--step-2-color); }
         .step-3 .step-number { background-color: var(--step-3-color); }
         .step-4 .step-number { background-color: var(--step-4-color); }
 
         @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-                margin-top: 100px; /* Mehr Platz oben auf dem Handy */
-            }
-            .step-item {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .fixed-logo {
-                width: 60px;
-                top: 10px;
-                left: 10px;
-            }
+            .container { padding: 20px; margin-top: 100px; }
+            .step-item { flex-direction: column; gap: 10px; }
+            .fixed-logo { width: 60px; top: 10px; left: 10px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Das Logo, das sich mitbewegt -->
-    <img src="logo.png" alt="Garbage Collection Logo" class="fixed-logo">
+    <!-- Logo mit deinem gewünschten Pfad -->
+    <img src="Dokumente/WDG/Freiday/GarbageCollectionLogoFertig.png" alt="Garbage Collection Logo" class="fixed-logo">
 
     <div class="container">
         <div class="header">
@@ -136,7 +125,6 @@
         </div>
 
         <div class="steps-list">
-            <!-- Schritt 1 -->
             <div class="step-item step-1">
                 <div class="step-number">1</div>
                 <div class="step-content">
@@ -145,7 +133,6 @@
                 </div>
             </div>
 
-            <!-- Schritt 2 -->
             <div class="step-item step-2">
                 <div class="step-number">2</div>
                 <div class="step-content">
@@ -154,7 +141,6 @@
                 </div>
             </div>
 
-            <!-- Schritt 3 -->
             <div class="step-item step-3">
                 <div class="step-number">3</div>
                 <div class="step-content">
@@ -163,7 +149,6 @@
                 </div>
             </div>
 
-            <!-- Schritt 4 -->
             <div class="step-item step-4">
                 <div class="step-number">4</div>
                 <div class="step-content">
