@@ -29,12 +29,24 @@
             min-height: 100vh;
         }
 
+        /* Fixiertes Logo oben links */
+        .fixed-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 80px; /* Größe des Logos */
+            height: auto;
+            z-index: 1000;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
         .container {
             max-width: 800px;
             background: white;
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-top: 40px; /* Platz für das Logo auf kleinen Bildschirmen */
         }
 
         .header {
@@ -98,15 +110,24 @@
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
+                margin-top: 100px; /* Mehr Platz oben auf dem Handy */
             }
             .step-item {
                 flex-direction: column;
                 gap: 10px;
             }
+            .fixed-logo {
+                width: 60px;
+                top: 10px;
+                left: 10px;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- Das Logo, das sich mitbewegt -->
+    <img src="logo.png" alt="Garbage Collection Logo" class="fixed-logo">
 
     <div class="container">
         <div class="header">
