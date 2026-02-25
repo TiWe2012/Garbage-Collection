@@ -1,1 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garbage Collection - So spielst du</title>
+    <style>
+        :root {
+            --primary-green: #10b981;
+            --step-1-color: #0d9488;
+            --step-2-color: #4f46e5;
+            --step-3-color: #c026d3;
+            --step-4-color: #ea580c;
+            --bg-light: #f9fafb;
+            --text-dark: #1f2937;
+            --text-muted: #4b5563;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--step-1-color);
+            margin-bottom: 40px;
+            border-bottom: 2px solid #f3f4f6;
+            padding-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .steps-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .step-number {
+            min-width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h2 {
+            margin: 0 0 8px 0;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+        }
+
+        .step-content p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Individuelle Farben für die Schritte */
+        .step-1 .step-number { background-color: var(--step-1-color); }
+        .step-2 .step-number { background-color: var(--step-2-color); }
+        .step-3 .step-number { background-color: var(--step-3-color); }
+        .step-4 .step-number { background-color: var(--step-4-color); }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            .step-item {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+            <h1>So spielst du</h1>
+        </div>
+
+        <div class="steps-list">
+            <!-- Schritt 1 -->
+            <div class="step-item step-1">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h2>Müll finden</h2>
+                    <p>Gehe nach draußen und finde verschmutzte Bereiche in deiner Umgebung.</p>
+                </div>
+            </div>
+
+            <!-- Schritt 2 -->
+            <div class="step-item step-2">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h2>Video aufnehmen</h2>
+                    <p>Filme den Bereich vor und nach der Reinigung in einem Video (15-60 Sekunden).</p>
+                </div>
+            </div>
+
+            <!-- Schritt 3 -->
+            <div class="step-item step-3">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h2>KI-Analyse</h2>
+                    <p>Lade das Video in der App hoch und lass es von unserer KI analysieren.</p>
+                </div>
+            </div>
+
+            <!-- Schritt 4 -->
+            <div class="step-item step-4">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h2>Punkte erhalten</h2>
+                    <p>Erhalte automatisch Punkte basierend auf der gesammelten Müllmenge!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
