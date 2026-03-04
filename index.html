@@ -29,16 +29,17 @@
             min-height: 100vh;
         }
 
-        /* Fixiertes Logo oben links (50x50px) */
+        /* Fixiertes Logo oben links (200px) */
         .fixed-logo {
             position: fixed;
             top: 20px;
             left: 20px;
-            width: 50px;
-            height: 50px;
+            width: 200px !important;
+            height: auto;
+            max-height: 200px;
             object-fit: contain;
             z-index: 1000;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
         }
 
         .container {
@@ -48,8 +49,8 @@
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin-top: 80px; /* Reduzierter Abstand wegen kleinerem Logo */
-            margin-bottom: 60px;
+            margin-top: 230px; /* Weiter erhöht für das 200px Logo */
+            margin-bottom: 40px;
         }
 
         .header {
@@ -113,35 +114,46 @@
         footer {
             margin-top: auto;
             width: 100%;
+            max-width: 800px;
             text-align: center;
-            padding: 40px 0;
+            padding: 60px 0;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 1rem;
             border-top: 1px solid #e5e7eb;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 40px;
+        }
+
+        .footer-text {
+            margin: 0;
+            font-weight: 500;
         }
 
         .footer-logos {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 50px;
             flex-wrap: wrap;
         }
 
         .footer-logo {
-            width: 50px;
-            height: 50px;
+            width: 200px !important;
+            height: auto;
+            max-height: 200px;
             object-fit: contain;
-            opacity: 0.9;
+            opacity: 0.95;
         }
 
         @media (max-width: 600px) {
-            .container { padding: 20px; margin-top: 80px; }
+            .container { padding: 20px; margin-top: 180px; }
+            .fixed-logo { width: 150px !important; }
             .step-item { flex-direction: column; gap: 10px; }
+            footer { padding: 40px 20px; }
+            .footer-logos { gap: 30px; }
+            .footer-logo { width: 150px !important; }
         }
     </style>
 </head>
@@ -201,7 +213,7 @@
 
     <!-- Footer Bereich -->
     <footer>
-        <p>@WDG, @Freiday und @Garbage Collection</p>
+        <p class="footer-text">@WDG, @Freiday und @Garbage Collection</p>
         <div class="footer-logos">
             <img 
                 src="GarbageCollectionLOGOohneHintergrund.png" 
