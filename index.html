@@ -30,17 +30,6 @@
             min-height: 100vh;
         }
 
-        /* Hauptüberschrift */
-        .main-header {
-            text-align: center;
-            color: var(--primary-green);
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            margin-top: 20px;
-            letter-spacing: -0.5px;
-        }
-
         /* Fixiertes Logo oben links (200px) */
         .fixed-logo {
             position: fixed;
@@ -63,6 +52,17 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             margin-top: 230px; /* Weiter erhöht für das 200px Logo */
             margin-bottom: 40px;
+        }
+
+        /* Hauptüberschrift vor Container */
+        .main-title {
+            text-align: center;
+            color: var(--step-1-color);
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            margin-top: 230px;
+            letter-spacing: -0.5px;
         }
 
         .header {
@@ -160,11 +160,12 @@
         }
 
         @media (max-width: 600px) {
-            .main-header {
+            .main-title {
                 font-size: 2rem;
-                margin-bottom: 20px;
+                margin-top: 180px;
+                margin-bottom: 30px;
             }
-            .container { padding: 20px; margin-top: 180px; }
+            .container { padding: 20px; margin-top: 0; }
             .fixed-logo { width: 200px !important; }
             .step-item { flex-direction: column; gap: 10px; }
             footer { padding: 40px 20px; }
@@ -183,7 +184,7 @@
     >
 
     <!-- Hauptüberschrift -->
-    <h1 class="main-header">🌱 Garbage Collection</h1>
+    <h1 class="main-title">Garbage Collection</h1>
 
     <div class="container">
         <div class="header">
