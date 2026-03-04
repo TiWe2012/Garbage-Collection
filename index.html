@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Garbage Collection - So spielst du</title>
+    <link rel="canonical" href="https://garbage-collection.de">
     <style>
         :root {
             --primary-green: #10b981;
@@ -27,6 +28,17 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+        }
+
+        /* Hauptüberschrift */
+        .main-header {
+            text-align: center;
+            color: var(--primary-green);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            margin-top: 20px;
+            letter-spacing: -0.5px;
         }
 
         /* Fixiertes Logo oben links (200px) */
@@ -148,12 +160,16 @@
         }
 
         @media (max-width: 600px) {
+            .main-header {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
             .container { padding: 20px; margin-top: 180px; }
-            .fixed-logo { width: 150px !important; }
+            .fixed-logo { width: 200px !important; }
             .step-item { flex-direction: column; gap: 10px; }
             footer { padding: 40px 20px; }
             .footer-logos { gap: 30px; }
-            .footer-logo { width: 150px !important; }
+            .footer-logo { width: 200px !important; }
         }
     </style>
 </head>
@@ -165,6 +181,9 @@
         class="fixed-logo" 
         alt="Garbage Collection Logo"
     >
+
+    <!-- Hauptüberschrift -->
+    <h1 class="main-header">🌱 Garbage Collection</h1>
 
     <div class="container">
         <div class="header">
