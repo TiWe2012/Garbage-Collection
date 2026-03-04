@@ -29,15 +29,16 @@
             min-height: 100vh;
         }
 
-        /* Vergrößertes Logo oben links (fixed) */
+        /* Fixiertes Logo oben links (50x50px) */
         .fixed-logo {
             position: fixed;
             top: 20px;
             left: 20px;
-            width: 150px;
-            height: auto;
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
             z-index: 1000;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
         .container {
@@ -47,7 +48,7 @@
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin-top: 180px;
+            margin-top: 80px; /* Reduzierter Abstand wegen kleinerem Logo */
             margin-bottom: 60px;
         }
 
@@ -127,22 +128,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px;
+            gap: 20px;
             flex-wrap: wrap;
         }
 
         .footer-logo {
-            height: 60px; /* Einheitliche Höhe für beide Logos */
-            width: auto;
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
             opacity: 0.9;
         }
 
         @media (max-width: 600px) {
-            .container { padding: 20px; margin-top: 140px; }
-            .fixed-logo { width: 100px; }
+            .container { padding: 20px; margin-top: 80px; }
             .step-item { flex-direction: column; gap: 10px; }
-            .footer-logos { gap: 20px; }
-            .footer-logo { height: 40px; }
         }
     </style>
 </head>
@@ -204,13 +203,11 @@
     <footer>
         <p>@WDG, @Freiday und @Garbage Collection</p>
         <div class="footer-logos">
-            <!-- Garbage Collection Logo -->
             <img 
                 src="GarbageCollectionLOGOohneHintergrund.png" 
                 class="footer-logo" 
                 alt="Garbage Collection Logo"
             >
-            <!-- FREIDAY Logo -->
             <img 
                 src="FREIDAY-logo.png" 
                 class="footer-logo" 
