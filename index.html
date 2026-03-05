@@ -23,7 +23,7 @@
             color: var(--text-dark);
             line-height: 1.6;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -31,10 +31,23 @@
         }
 
         /* Fixiertes Logo oben links (200px) */
-        .fixed-logo {
+        .fixed-logo-left {
             position: fixed;
             top: 20px;
             left: 20px;
+            width: 200px !important;
+            height: auto;
+            max-height: 200px;
+            object-fit: contain;
+            z-index: 1000;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+        }
+
+        /* Fixiertes Logo oben rechts (200px) */
+        .fixed-logo-right {
+            position: fixed;
+            top: 20px;
+            right: 20px;
             width: 200px !important;
             height: auto;
             max-height: 200px;
@@ -50,7 +63,8 @@
             font-size: 2.8rem;
             font-weight: 700;
             margin-bottom: 20px;
-            margin-top: 230px;
+            margin-top: 0;
+            padding-top: 240px;
             letter-spacing: -0.5px;
         }
 
@@ -61,8 +75,7 @@
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin-top: 0;
-            margin-bottom: 40px;
+            margin: 0 20px 40px 20px;
         }
 
         .header {
@@ -162,11 +175,15 @@
         @media (max-width: 600px) {
             .main-title {
                 font-size: 2rem;
-                margin-top: 180px;
+                padding-top: 190px;
                 margin-bottom: 15px;
             }
-            .container { padding: 20px; margin-top: 0; }
-            .fixed-logo { width: 200px !important; }
+            .container { 
+                padding: 20px;
+                margin: 0 10px 40px 10px;
+            }
+            .fixed-logo-left { width: 200px !important; }
+            .fixed-logo-right { width: 200px !important; }
             .step-item { flex-direction: column; gap: 10px; }
             footer { padding: 40px 20px; }
             .footer-logos { gap: 30px; }
@@ -176,11 +193,18 @@
 </head>
 <body>
 
-    <!-- Logo (Fixed oben links) -->
+    <!-- Logo oben links -->
     <img 
         src="GarbageCollectionLOGOohneHintergrund.png" 
-        class="fixed-logo" 
+        class="fixed-logo-left" 
         alt="Garbage Collection Logo"
+    >
+
+    <!-- Logo oben rechts -->
+    <img 
+        src="FREIDAY-logo.png" 
+        class="fixed-logo-right" 
+        alt="FREIDAY Logo"
     >
 
     <!-- Hauptüberschrift -->
