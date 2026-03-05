@@ -65,10 +65,11 @@
             color: var(--step-1-color);
             font-size: 2.8rem;
             font-weight: 700;
-            padding-top: 0px;
+            padding-top: 0;
             padding-bottom: 0;
             letter-spacing: -0.5px;
             width: 100%;
+            margin-top: 150px;
         }
 
         .container {
@@ -108,16 +109,31 @@
         }
 
         .step-number {
-            min-width: 45px;
-            height: 45px;
+            min-width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             color: white;
             font-weight: bold;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             flex-shrink: 0;
+            padding: 15px;
+        }
+
+        /* Gradient Hintergrund für Zahlen */
+        .step-1 .step-number {
+            background: linear-gradient(180deg, #d1fae5 0%, #0d9488 100%);
+        }
+        .step-2 .step-number {
+            background: linear-gradient(180deg, #dbeafe 0%, #4f46e5 100%);
+        }
+        .step-3 .step-number {
+            background: linear-gradient(180deg, #f3e8ff 0%, #c026d3 100%);
+        }
+        .step-4 .step-number {
+            background: linear-gradient(180deg, #fed7aa 0%, #ea580c 100%);
         }
 
         .step-content h2 {
@@ -130,11 +146,6 @@
             color: var(--text-muted);
             font-size: 1.1rem;
         }
-
-        .step-1 .step-number { background-color: var(--step-1-color); }
-        .step-2 .step-number { background-color: var(--step-2-color); }
-        .step-3 .step-number { background-color: var(--step-3-color); }
-        .step-4 .step-number { background-color: var(--step-4-color); }
 
         /* Footer Bereich */
         footer {
@@ -176,8 +187,9 @@
         @media (max-width: 600px) {
             .main-title {
                 font-size: 2rem;
-                padding-top: 120px;
+                padding-top: 0;
                 padding-bottom: 0;
+                margin-top: 120px;
             }
             .container { 
                 padding: 20px;
@@ -186,6 +198,12 @@
             .fixed-logo-left { width: 200px !important; }
             .fixed-logo-right { width: 200px !important; }
             .step-item { flex-direction: column; gap: 10px; }
+            .step-number {
+                min-width: 55px;
+                height: 55px;
+                font-size: 1.3rem;
+                padding: 12px;
+            }
             footer { padding: 40px 20px; }
             .footer-logos { gap: 30px; }
             .footer-logo { width: 200px !important; }
@@ -234,7 +252,7 @@
                 <div class="step-number">2</div>
                 <div class="step-content">
                     <h2>Foto aufnehmen</h2>
-                    <p>Mache ein Foto von dem Müll wie sie den in den Müll schmeißen(1-3 Fotos).</p>
+                    <p>Machen sie ein Foto wie sie den Müll wegschmeißen (1-3 Fotos).</p>
                 </div>
             </div>
 
