@@ -122,19 +122,11 @@
             padding: 15px;
         }
 
-        /* Gradient Hintergrund für Zahlen */
-        .step-1 .step-number {
-            background: linear-gradient(180deg, #d1fae5 0%, #0d9488 100%);
-        }
-        .step-2 .step-number {
-            background: linear-gradient(180deg, #dbeafe 0%, #4f46e5 100%);
-        }
-        .step-3 .step-number {
-            background: linear-gradient(180deg, #f3e8ff 0%, #c026d3 100%);
-        }
-        .step-4 .step-number {
-            background: linear-gradient(180deg, #fed7aa 0%, #ea580c 100%);
-        }
+        /* Einfarbige Hintergründe für Zahlen */
+        .step-1 .step-number { background-color: var(--step-1-color); }
+        .step-2 .step-number { background-color: var(--step-2-color); }
+        .step-3 .step-number { background-color: var(--step-3-color); }
+        .step-4 .step-number { background-color: var(--step-4-color); }
 
         .step-content h2 {
             font-size: 1.4rem;
