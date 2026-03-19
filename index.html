@@ -39,6 +39,8 @@
       background: var(--white);
       color: var(--ink);
       line-height: 1.6;
+    }
+    .page-wrapper {
       overflow-x: hidden;
     }
 
@@ -630,7 +632,7 @@
 <!-- NAV -->
 <nav id="navbar">
   <div class="nav-inner">
-    <img src="favicon.png" alt="Garbage Collection" style="height:60px;width:auto;object-fit:contain;" />
+    <img src="favicon.png" alt="Garbage Collection" style="height:150px;width:auto;object-fit:contain;" />
     <div class="nav-links">
       <a href="#how" class="nav-link">So geht's</a>
       <a href="#partners" class="nav-link">Partner</a>
@@ -639,6 +641,7 @@
   </div>
 </nav>
 
+<div class="page-wrapper">
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
@@ -946,5 +949,6 @@ document.querySelectorAll('.partner-card').forEach(card => {
   });
 });
 </script>
+</div><!-- /page-wrapper -->
 </body>
 </html>
