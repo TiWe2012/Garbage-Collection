@@ -42,7 +42,7 @@
     }
     .page-wrapper {
       overflow-x: hidden;
-      padding-top: 100px; /* Platz für die fixierte Navigationsleiste */
+      padding-top: 180px; /* Platz für die fixierte Navigationsleiste mit 150px Logo */
     }
 
     /* ── NAV ── */
@@ -50,10 +50,16 @@
       position: fixed;
       top: 0;
       left: 0;
+      right: 0;
       width: 100%;
-      z-index: 9999;
+      z-index: 10000;
       background: transparent;
       border-bottom: none;
+      pointer-events: none;
+    }
+
+    nav * {
+      pointer-events: auto;
     }
 
     .nav-inner {
@@ -61,6 +67,8 @@
       padding: 16px 40px;
       display: flex; align-items: center; gap: 32px;
       height: auto;
+      position: relative;
+      z-index: 10001;
     }
 
     .logo-mark {
