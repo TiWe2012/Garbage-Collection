@@ -44,10 +44,16 @@
 
     /* ── NAV ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 9000;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      z-index: 9999 !important;
       background: transparent;
       border-bottom: none;
       pointer-events: none;
+      transform: none !important;
+      will-change: auto;
     }
     nav.scrolled { box-shadow: none; background: transparent; }
 
@@ -114,8 +120,7 @@
       position: absolute; inset: 0;
       background-image: radial-gradient(circle, var(--border) 1.5px, transparent 1.5px);
       background-size: 32px 32px;
-      mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, black 30%, transparent 100%);
-      pointer-events: none; opacity: .7;
+      pointer-events: none; opacity: .4;
     }
 
     .hero-content { position: relative; z-index: 1; }
@@ -633,7 +638,7 @@
 <!-- NAV -->
 <nav id="navbar">
   <div class="nav-inner">
-    <img src="favicon.png" alt="Garbage Collection" style="height:150px;width:auto;object-fit:contain;" />
+    <img src="favicon.png" alt="Garbage Collection" style="height:60px;width:auto;object-fit:contain;" />
     <div class="nav-links">
       <a href="#how" class="nav-link">So geht's</a>
       <a href="#partners" class="nav-link">Partner</a>
@@ -791,12 +796,6 @@
 function scrollTo(id) {
   document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
 }
-
-/* ── Navbar shrink ── */
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 30);
-}, { passive: true });
 
 /* ── Intersection Observer: reveal ── */
 const io = new IntersectionObserver((entries) => {
