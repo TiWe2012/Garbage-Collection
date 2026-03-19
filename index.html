@@ -44,13 +44,12 @@
 
     /* ── NAV ── */
     nav {
-      position: sticky; top: 0; z-index: 500;
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      transition: box-shadow .3s;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      background: transparent;
+      border-bottom: none;
+      transition: none;
     }
-    nav.scrolled { box-shadow: var(--shadow-s); }
+    nav.scrolled { box-shadow: none; background: transparent; }
 
     .nav-inner {
       max-width: 1100px; margin: 0 auto;
@@ -58,7 +57,7 @@
       display: flex; align-items: center; gap: 32px;
       transition: padding .3s;
     }
-    nav.scrolled .nav-inner { padding: 10px 40px; }
+    nav.scrolled .nav-inner { padding: 16px 40px; }
 
     .logo-mark {
       width: 40px; height: 40px; border-radius: 11px;
@@ -76,20 +75,20 @@
 
     .nav-links { display: flex; gap: 4px; margin-left: auto; }
     .nav-link {
-      padding: 8px 16px; border-radius: 99px;
+      padding: 12px 22px; border-radius: 99px;
       font-family: Arial, sans-serif;
-      font-size: .88rem; font-weight: 600;
-      color: var(--muted); text-decoration: none;
+      font-size: 1rem; font-weight: 700;
+      color: var(--ink-2); text-decoration: none;
       transition: color .2s, background .2s;
     }
-    .nav-link:hover { color: var(--ink); background: var(--surface); }
+    .nav-link:hover { color: var(--ink); background: rgba(255,255,255,.7); }
 
     .nav-cta {
       background: var(--green-d); color: #fff;
       border: none; border-radius: 99px;
-      padding: 11px 24px;
+      padding: 16px 32px;
       font-family: Arial, sans-serif;
-      font-size: .9rem; font-weight: 700;
+      font-size: 1.05rem; font-weight: 700;
       cursor: pointer; letter-spacing: .3px;
       box-shadow: 0 4px 16px rgba(22,163,74,.35);
       transition: background .2s, transform .3s var(--spring), box-shadow .2s;
@@ -103,7 +102,7 @@
     /* ── HERO ── */
     .hero {
       max-width: 1100px; margin: 0 auto;
-      padding: 90px 40px 70px;
+      padding: 180px 40px 70px;
       display: grid; grid-template-columns: 1fr 1fr;
       gap: 60px; align-items: center;
       position: relative;
