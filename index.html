@@ -52,32 +52,17 @@
       left: 0;
       width: 100%;
       z-index: 9999;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.3s, box-shadow 0.3s;
-    }
-
-    nav.scrolled {
-      background: rgba(255, 255, 255, 0.98);
-      box-shadow: var(--shadow-s);
+      border-bottom: none;
     }
 
     .nav-inner {
       max-width: 1100px; margin: 0 auto;
-      padding: 12px 40px;
-      display: flex; align-items: center; gap: 24px;
-      height: 80px;
-    }
-
-    nav.scrolled .nav-inner {
-      height: 70px;
-      padding: 8px 40px;
-    }
-
-    nav.scrolled img {
-      height: 40px !important;
+      padding: 16px 40px;
+      display: flex; align-items: center; gap: 32px;
+      height: auto;
     }
 
     .logo-mark {
@@ -100,12 +85,7 @@
       font-family: Arial, sans-serif;
       font-size: 1rem; font-weight: 700;
       color: var(--ink-2); text-decoration: none;
-      transition: color .2s, background .2s, font-size .3s, padding .3s;
-    }
-
-    nav.scrolled .nav-link {
-      font-size: 0.9rem;
-      padding: 10px 18px;
+      transition: color .2s, background .2s;
     }
     .nav-link:hover { color: var(--ink); background: rgba(255,255,255,.7); }
 
@@ -117,12 +97,7 @@
       font-size: 1.05rem; font-weight: 700;
       cursor: pointer; letter-spacing: .3px;
       box-shadow: 0 4px 16px rgba(22,163,74,.35);
-      transition: background .2s, transform .3s var(--spring), box-shadow .2s, padding .3s, font-size .3s;
-    }
-
-    nav.scrolled .nav-cta {
-      padding: 12px 24px;
-      font-size: 0.95rem;
+      transition: background .2s, transform .3s var(--spring), box-shadow .2s;
     }
     .nav-cta:hover {
       background: var(--green);
@@ -663,7 +638,7 @@
 <!-- NAV -->
 <nav id="navbar">
   <div class="nav-inner">
-    <img src="favicon.png" alt="Garbage Collection" style="height:50px;width:auto;object-fit:contain;transition:height 0.3s ease;" />
+    <img src="favicon.png" alt="Garbage Collection" style="height:150px;width:auto;object-fit:contain;" />
     <div class="nav-links">
       <a href="#how" class="nav-link">So geht's</a>
       <a href="#partners" class="nav-link">Partner</a>
@@ -818,17 +793,6 @@
 <div class="toast" id="toast"></div>
 
 <script>
-/* ── Navbar Scroll Effect ── */
-window.addEventListener('scroll', () => {
-  const nav = document.getElementById('navbar');
-  const navbar = document.getElementById('navbar');
-  if (window.scrollY > 20) {
-    navbar.classList.add('scrolled');
-  } else {
-    navbar.classList.remove('scrolled');
-  }
-});
-
 /* ── Scroll helper ── */
 function scrollTo(id) {
   document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
