@@ -188,20 +188,21 @@
     }
     .btn-full { width: 100%; justify-content: center; }
 
-    /* Stats */
-    .hero-stats { display: flex; align-items: center; gap: 24px; }
-    .stat { text-align: center; }
-    .stat-num {
-      display: block; font-size: 2rem; font-weight: 900;
-      color: var(--green-d); line-height: 1;
+    /* Slogan */
+    .hero-slogan {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: var(--tag-bg);
+      border: 1.5px solid var(--green-l);
+      border-radius: 14px; padding: 14px 22px;
     }
-    .stat-label {
-      font-family: Arial, sans-serif;
-      font-size: .72rem; font-weight: 600;
-      color: var(--muted); letter-spacing: .3px;
-      text-transform: uppercase;
+    .hero-slogan-icon { font-size: 1.6rem; }
+    .hero-slogan-text {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1.05rem; font-weight: 700;
+      font-style: italic;
+      color: var(--green-xd);
+      letter-spacing: .1px;
     }
-    .stat-divider { width: 1px; height: 36px; background: var(--border); flex-shrink: 0; }
 
     /* Phone Visual */
     .hero-visual {
@@ -605,7 +606,7 @@
       .hero { grid-template-columns: 1fr; text-align: center; padding: 60px 24px; }
       .hero-sub { max-width: 100%; }
       .hero-actions { justify-content: center; }
-      .hero-stats { justify-content: center; }
+      .hero-slogan { justify-content: center; }
       .hero-visual { order: -1; }
       .steps-track { grid-template-columns: 1fr 1fr; }
       .steps-connector { display: none; }
@@ -658,21 +659,9 @@
       </button>
       <button class="btn-ghost" onclick="scrollTo('how')">So funktioniert's</button>
     </div>
-    <div class="hero-stats reveal d4">
-      <div class="stat">
-        <span class="stat-num" data-target="44">0</span>
-        <span class="stat-label">Teilnehmer</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat">
-        <span class="stat-num" data-target="0">0</span>
-        <span class="stat-label">kg Müll</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat">
-        <span class="stat-num" data-target="0">0</span>
-        <span class="stat-label">Aktionen</span>
-      </div>
+    <div class="hero-slogan reveal d4">
+      <span class="hero-slogan-icon">🌿</span>
+      <span class="hero-slogan-text">Wir wollen eine saubere Umgebung</span>
     </div>
   </div>
 
@@ -809,24 +798,6 @@ const stepIO = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.step-card').forEach(el => stepIO.observe(el));
 
-/* ── Counter animation ── */
-function animCount(el, target, dur = 1600) {
-  let v = 0, step = target / (dur / 16);
-  const t = setInterval(() => {
-    v += step;
-    if (v >= target) { v = target; clearInterval(t); }
-    el.textContent = Math.floor(v).toLocaleString('de-DE');
-  }, 16);
-}
-const statsIO = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting) {
-    document.querySelectorAll('.stat-num').forEach(el => animCount(el, +el.dataset.target));
-    statsIO.disconnect();
-  }
-}, { threshold: 0.5 });
-const heroStats = document.querySelector('.hero-stats');
-if (heroStats) statsIO.observe(heroStats);
-
 /* ── Drag & Drop ── */
 const dropZone   = document.getElementById('dropZone');
 const fileInput  = document.getElementById('fileInput');
@@ -885,6 +856,15 @@ function handleSubmit() {
     animCount(document.getElementById('scoreNum'), score, 1200);
     confetti();
   }, 2800);
+}
+
+function animCount(el, target, dur = 1600) {
+  let v = 0, step = target / (dur / 16);
+  const t = setInterval(() => {
+    v += step;
+    if (v >= target) { v = target; clearInterval(t); }
+    el.textContent = Math.floor(v).toLocaleString('de-DE');
+  }, 16);
 }
 
 function resetForm() {
