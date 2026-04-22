@@ -41,10 +41,21 @@
     .page-wrapper { overflow-x: hidden; }
 
     /* NAV */
-    nav { background: transparent; border-bottom: none; }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(212,222,206,0.5);
+      transition: background .3s, box-shadow .3s;
+    }
+    nav.scrolled {
+      background: rgba(255,255,255,0.92);
+      box-shadow: var(--shadow-s);
+    }
     .nav-inner {
       max-width: 1100px; margin: 0 auto;
-      padding: 16px 40px;
+      padding: 12px 40px;
       display: flex; align-items: center; gap: 32px;
     }
     .nav-links { display: flex; gap: 4px; margin-left: auto; }
@@ -55,7 +66,7 @@
       color: var(--ink-2); text-decoration: none;
       transition: color .2s, background .2s;
     }
-    .nav-link:hover { color: var(--ink); background: rgba(255,255,255,.7); }
+    .nav-link:hover { color: var(--ink); background: rgba(34,197,94,.12); }
 
     /* HERO */
     .hero {
@@ -95,7 +106,7 @@
       background: #fffbeb;
       border: 1.5px solid #fcd34d;
       border-radius: 14px; padding: 16px 24px;
-      margin-bottom: 28px;
+      margin-bottom: 20px;
     }
     .coming-soon-icon { font-size: 1.5rem; flex-shrink: 0; }
     .coming-soon-text {
@@ -201,11 +212,10 @@
       height: 100%;
       background: linear-gradient(90deg, var(--green-l), var(--green-d));
       border-radius: 99px;
-      animation: bar-grow 1.8s var(--ease) .8s both;
-      transform-origin: left;
+      width: 0;
+      transition: width 1.4s var(--ease);
     }
-    @keyframes bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-    .phone-pct { width: 26px; text-align: right; font-weight: 700; }
+    .phone-bar-fill.animated { }
 
     .phone-shadow {
       width: 120px; height: 16px;
@@ -316,13 +326,16 @@
     .partner-role { font-family: Arial, sans-serif; font-size: .76rem; color: var(--muted); line-height: 1.45; }
 
     /* FOOTER */
-    footer { border-top: 1px solid var(--border); padding: 32px 40px; }
+    footer { border-top: 1px solid var(--border); padding: 28px 40px; }
     .footer-inner {
       max-width: 1100px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 12px;
     }
-    .footer-brand { display: flex; align-items: center; gap: 10px; font-family: Arial, sans-serif; font-weight: 700; font-size: .93rem; color: var(--ink-2); }
+    .footer-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-family: Arial, sans-serif; font-weight: 700; font-size: .93rem; color: var(--ink-2);
+    }
     .footer-copy { font-family: Arial, sans-serif; font-size: .78rem; color: var(--muted); }
 
     /* Reveal */
@@ -362,7 +375,7 @@
 <!-- NAV -->
 <nav id="navbar">
   <div class="nav-inner">
-    <img src="favicon.png" alt="Garbage Collection" style="height:150px;width:auto;object-fit:contain;" />
+    <img src="favicon.png" alt="Garbage Collection" style="height:40px;width:auto;object-fit:contain;" />
     <div class="nav-links">
       <a href="#how" class="nav-link">So geht's</a>
       <a href="#partners" class="nav-link">Partner</a>
@@ -412,12 +425,12 @@
           </div>
           <div class="phone-bar-row">
             <span class="phone-bar-label">Menge</span>
-            <div class="phone-bar"><div class="phone-bar-fill" style="width:72%"></div></div>
+            <div class="phone-bar"><div class="phone-bar-fill" data-width="72%"></div></div>
             <span class="phone-pct">72%</span>
           </div>
           <div class="phone-bar-row">
             <span class="phone-bar-label">Qualität</span>
-            <div class="phone-bar"><div class="phone-bar-fill" style="width:90%"></div></div>
+            <div class="phone-bar"><div class="phone-bar-fill" data-width="90%"></div></div>
             <span class="phone-pct">90%</span>
           </div>
         </div>
@@ -487,7 +500,7 @@
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="favicon.png" alt="Garbage Collection" style="height:150px;width:auto;object-fit:contain;" />
+      <img src="favicon.png" alt="Garbage Collection" style="height:40px;width:auto;object-fit:contain;" />
       GarbageCollection
     </div>
     <p class="footer-copy">© 2025 · @WDG · @FREIDAY · @Garbage Collection · Für eine sauberere Welt.</p>
@@ -495,37 +508,61 @@
 </footer>
 
 <script>
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-  });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-const stepIO = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const n = parseInt(e.target.dataset.step) || 0;
-      setTimeout(() => e.target.classList.add('visible'), (n - 1) * 130);
-      stepIO.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('.step-card').forEach(el => stepIO.observe(el));
+  // Step cards staggered
+  const stepIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const n = parseInt(e.target.dataset.step) || 0;
+        setTimeout(() => e.target.classList.add('visible'), (n - 1) * 130);
+        stepIO.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.step-card').forEach(el => stepIO.observe(el));
 
-document.querySelectorAll('.partner-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    const dx = ((e.clientX - r.left) / r.width  - .5) * 14;
-    const dy = ((e.clientY - r.top)  / r.height - .5) * 14;
-    card.style.transform = `translateY(-6px) rotateX(${-dy}deg) rotateY(${dx}deg)`;
-    card.style.transition = 'box-shadow .3s, border-color .2s';
+  // Fix: animate phone bars properly using width transition
+  const barIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.phone-bar-fill').forEach(bar => {
+          const target = bar.dataset.width;
+          setTimeout(() => { bar.style.width = target; }, 600);
+        });
+        barIO.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  const phoneEl = document.querySelector('.hero-visual');
+  if (phoneEl) barIO.observe(phoneEl);
+
+  // Partner card 3D tilt
+  document.querySelectorAll('.partner-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const dx = ((e.clientX - r.left) / r.width  - .5) * 14;
+      const dy = ((e.clientY - r.top)  / r.height - .5) * 14;
+      card.style.transform = `translateY(-6px) rotateX(${-dy}deg) rotateY(${dx}deg)`;
+      card.style.transition = 'box-shadow .3s, border-color .2s';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.transition = 'transform .4s cubic-bezier(.22,1.4,.36,1), box-shadow .3s, border-color .2s';
+    });
   });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-    card.style.transition = 'transform .4s cubic-bezier(.22,1.4,.36,1), box-shadow .3s, border-color .2s';
-  });
-});
+
+  // Sticky nav shadow on scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
 </script>
 </div>
 </body>
